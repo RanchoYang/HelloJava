@@ -8,6 +8,10 @@
   7.docker search $name 从仓库查询某种类型的镜像，如 docker search redis
   8.docker pull $name 下载指定的镜像，不加tag的话，是默认下载latest版本的镜像
   9.docker exec -it $containerId bash  进入命令控制台
+  10.docker network ls 查询docker网络地址
+  11.docker network rm $name 删除指定名字的网络
+  12.docker inspect network $networkId 查看指定的network
+  13.docker network create --subnet=172.22.0.0/16 redis_net 创建名为redis_net的固定ip
   
 二、docker 创建 zookeeper
   1.docker search zookeeper
@@ -25,5 +29,6 @@
       --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci 设置编码格式
       
 四、docker 创建 redis
-  1. docker 
+  1.docker 
+  
    
