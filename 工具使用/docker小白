@@ -1,0 +1,29 @@
+一、常见命令
+  1.docker images 查询本地所有镜像
+  2.docker ps 查询正在运行的容器
+  3.docker ps -a 查询所有的容器
+  4.docker stop $containerId 关闭某个容器
+  5.docker restart $containerId 重新开始某个容器
+  6.docker logs $containerId 查看某个容器的日志
+  7.docker search $name 从仓库查询某种类型的镜像，如 docker search redis
+  8.docker pull $name 下载指定的镜像，不加tag的话，是默认下载latest版本的镜像
+  9.docker exec -it $containerId bash  进入命令控制台
+  
+二、docker 创建 zookeeper
+  1.docker search zookeeper
+  2.docker pull zookeeper
+  3.docker run -d --restart=always --name zookeeper -p 9181:2181 zookeeper
+    -d 在后台运行容器
+    --restart=always docker重启后，自动重启zookeeper容器
+    --name 指定该容器名
+    -p 9181:2181 把容器的端口映射到宿主机的端口
+    
+三、docker 创建 redis
+   docker run -it --name mysql -p 9306:3306 -v /data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      -v /data/mysql:/var/lib/mysql 将镜像里var/lib/mysql里面的数据挂载到data/mysql目录下
+      -e MYSQL_ROOT_PASSWORD=root 设置root用户登录密码
+      --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci 设置编码格式
+      
+四、docker 创建 redis
+  1. docker 
+   
