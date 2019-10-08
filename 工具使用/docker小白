@@ -10,7 +10,7 @@
   9.docker exec -it $containerId bash  进入命令控制台
   10.docker network ls 查询docker网络地址
   11.docker network rm $name 删除指定名字的网络
-  12.docker inspect network $networkId 查看指定的network
+  12.docker network inspect $networkId 查看指定的network
   13.docker network create --subnet=172.22.0.0/16 redis_net 创建名为redis_net的固定ip
   
 二、docker 创建 zookeeper
@@ -22,13 +22,14 @@
     --name 指定该容器名
     -p 9181:2181 把容器的端口映射到宿主机的端口
     
-三、docker 创建 redis
+三、docker 创建 mysql
    docker run -it --name mysql -p 9306:3306 -v /data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
       -v /data/mysql:/var/lib/mysql 将镜像里var/lib/mysql里面的数据挂载到data/mysql目录下
       -e MYSQL_ROOT_PASSWORD=root 设置root用户登录密码
       --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci 设置编码格式
       
 四、docker 创建 redis
-  1.docker 
+  1.docker run -d --name my_redis --net redis_net --ip 172.22.0.9 -p 6684:6379 redis 创建指定ip指定端口的redis
+
   
    
