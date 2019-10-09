@@ -34,6 +34,7 @@
   2.docker run -d --net redis_net --name my_redis -p 6567:6379 redis 创建指定网络和映射端口的redis容器
   
 五、docker 创建redis集群
+  方法一：
   1.依次创建3个redis容器 
     docker run -d --name redis_6379 --net redis_net -p 6379:6379 redis
     docker run -d --name redis_6380 --net redis_net -p 6380:6379 redis
@@ -43,13 +44,39 @@
     redis_6380 ：172.22.0.3   
     redis_6379 ：172.22.0.2
   3.选择redis_6379为主，其余两个容器为从节点：分别进入两个从节点的容器bash，运行：redis-cli，再运行命令：SLAVEOF 172.22.0.2 6379。
-    此时已经建立了主从关系了，可以进入主容器运行redis-cli，再运行：info replication查看，结果如下：
+    再运行：info replication查看：如果显示master_link_status:up，则此时已经建立了主从关系了
+    可以进入主容器运行redis-cli，再运行：info replication查看，结果如下：
     # Replication
     role:master
     connected_slaves:2
     slave0:ip=172.22.0.3,port=6379,state=online,offset=98,lag=0
     slave1:ip=172.22.0.4,port=6379,state=online,offset=98,lag=1
-  4.配置Redis哨兵
+  
+  方法二：通过挂载目录，可以设置redis密码
+  1.分别创建3个容器的挂载目录，redis/redis_master，redis/redis_slave1，redis/redis_slave2
+  2.分别在里面创建3个redis.conf文件，其中master的如下：
+      logfile "redis.log"
+      port 6379
+      dir ../data
+      appendonly yes
+      appendfilename appendonly.aof
+      requirepass password
+      
+    两个slave节点如下：
+      logfile "redis.log"
+      port 6379
+      dir ../data
+      appendonly yes
+      appendfilename appendonly.aof
+      requirepass password
+      slaveof 172.22.0.2 6379
+      masterauth password
+    3.启动三个容器
+      docker run -p 6379:6379 --net redis_net -v /redis/redis_master:/data --name redis_6379 -d redis redis-server redis.conf
+      docker run -p 6380:6379 --net redis_net -v /redis/redis_slave1:/data --name redis_6380 -d redis redis-server redis.conf
+      docker run -p 6381:6379 --net redis_net -v /redis/redis_slave2:/data --name redis_6381 -d redis redis-server redis.conf
+
+
 
 
   
