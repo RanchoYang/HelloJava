@@ -75,8 +75,18 @@
       docker run -p 6379:6379 --net redis_net -v /redis/redis_master:/data --name redis_6379 -d redis redis-server redis.conf
       docker run -p 6380:6379 --net redis_net -v /redis/redis_slave1:/data --name redis_6380 -d redis redis-server redis.conf
       docker run -p 6381:6379 --net redis_net -v /redis/redis_slave2:/data --name redis_6381 -d redis redis-server redis.conf
-
-
+    4.哨兵模式
+      分别进入主从节点所在的挂载目录，创建sentinel.conf，内容如下：
+      logfile "sentinel.log"
+      sentinel monitor mymaster 172.22.0.2 6379 1
+      sentinel auth-pass mymaster password
+    5.分别运行启动命令：
+      docker run -p 26379:26379 -v /redis/redis_master/:/data --name redis_26379 -d redis redis-sentinel sentinel.conf
+      docker run -p 26380:26379 -v /redis/redis_slave1/:/data --name redis_26380 -d redis redis-sentinel sentinel.conf
+      docker run -p 26381:26379 -v /redis/redis_slave2/:/data --name redis_26381 -d redis redis-sentinel sentinel.conf
+    6.检查
+      进入容器内部，并登录客户端：redis-cli -h 127.0.0.1 -p 26379
+      执行命令：info
 
 
   
