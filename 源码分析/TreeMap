@@ -1592,26 +1592,34 @@ public class TreeMap<K,V>
         return (p == null) ? null: p.right;
     }
 
-    /** From CLR */
+    // 左旋
     private void rotateLeft(Entry<K,V> p) {
         if (p != null) {
+            //替换节点为原节点的右节点
             Entry<K,V> r = p.right;
+            //元节点的右节点改为替换节点的左节点
             p.right = r.left;
             if (r.left != null)
+                //替换节点的右节点的父节点改为原节点
                 r.left.parent = p;
+            //替换节点的父节点改为原节点的父节点
             r.parent = p.parent;
             if (p.parent == null)
                 root = r;
             else if (p.parent.left == p)
+                //元节点的父节点的左节点改为替换节点
                 p.parent.left = r;
             else
+                //元节点的父节点的右节点改为替换节点
                 p.parent.right = r;
+            替换节点的左节点改为原节点
             r.left = p;
+            原节点的父节点改为替换节点
             p.parent = r;
         }
     }
 
-    /** From CLR */
+    //右旋，原理与左旋相反
     private void rotateRight(Entry<K,V> p) {
         if (p != null) {
             Entry<K,V> l = p.left;
