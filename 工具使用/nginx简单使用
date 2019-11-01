@@ -1,0 +1,49 @@
+
+1. 通过docker下载nginx镜像
+2. 运行命令：
+docker run -d -p 80:80 --name nginx -v /nginx/html:/usr/share/nginx/html -v /nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /nginx/logs:/var/log/nginx -v /nginx/conf.d:/etc/nginx/conf.d nginx
+3. 复制conf文件到挂载目录
+docker cp 容器id:/etc/nginx/nginx.conf /nginx/conf
+4. 此时查看nginx.conf,会发现里面有会查询所有conf.d目录下的conf文件： include /etc/nginx/conf.d/*.conf;
+5. 进入 conf.d文件夹，创建一个新的conf文件，并编辑内容
+ server {
+    listen       80;
+    server_name 域名;
+    location / {
+       proxy_pass http://主机IP:端口;
+      }
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+    root   /usr/share/nginx/html;
+    }
+}
+6. 重启容器，此时一般http协议的域名已经可以访问到了
+
+7. https协议的域名访问，需要使用证书：首先在创建一个新的证书目录，nginx/cert, 把证书和key放入其中
+8. 修改conf文件
+server {
+    listen       443 ssl;
+    server_name 域名;
+
+    ssl_certificate /cert/证书文件.pem; #我这里会在运行docker命令的时候，把cert挂载到放置证书的目录，所以这里使用相对目录就行
+    ssl_certificate_key /cert/证书的key.key;
+
+    ssl_session_timeout 5m;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+
+    location / {
+       proxy_pass http://主机IP:端口;
+      }
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+    root   /usr/share/nginx/html;
+    }
+}
+
+9. 运行命令：
+docker run -d -p 80:80 -p 443:443 --name nginx -v /nginx/html:/usr/share/nginx/html -v /nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /nginx/logs:/var/log/nginx -v /nginx/conf.d:/etc/nginx/conf.d -v /nginx/cert:/cert nginx
+
+
+
