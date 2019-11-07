@@ -1,0 +1,21 @@
+1.创建Dockerfile:
+FROM openjdk
+MAINTAINER rancho
+ADD 你的jar.jar app.jar
+EXPOSE 8080
+RUN bash -c 'touch /app.jar'
+ENTRYPOINT ["java","-jar","app.jar","--spring.config.location=/config/application.yml"]
+
+2.将dockerfile文件和你要发布的jar放在同一目录下，执行命令：
+docker build -t /你的镜像名:2019 .
+注意：2019指tag号，命令最后有一个.
+
+3.创建完成，可以使用命令查看创建的镜像
+docker images
+
+4.创建并启动容器
+docker run -dit --name 容器名 -p 8080:8080 --net java_net -v /java/config:/config 你的镜像名:2019
+
+
+
+
