@@ -14,7 +14,8 @@
   13.docker network create --subnet=172.22.0.0/16 redis_net 创建名为redis_net的固定ip
   14.docker inspect $containerId |grep IPA 查看指定容器的ip
   15.docker rmi $imageId 删除镜像
-  16.
+  16.docker build -t test/testimage . 创建一个名字为test/testimage，tag为latest的镜像
+  17.docker build -t test/testimage:2019 . 创建一个名字为test/testimage，tag为2019的镜像
   
 二、docker 创建 zookeeper
   1.docker search zookeeper
