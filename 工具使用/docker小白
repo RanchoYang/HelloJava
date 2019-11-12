@@ -11,11 +11,13 @@
   10.docker network ls 查询docker网络地址
   11.docker network rm $name 删除指定名字的网络
   12.docker network inspect $networkId 查看指定的network
-  13.docker network create --subnet=172.22.0.0/16 redis_net 创建名为redis_net的固定ip
-  14.docker inspect $containerId |grep IPA 查看指定容器的ip
-  15.docker rmi $imageId 删除镜像
-  16.docker build -t test/testimage . 创建一个名字为test/testimage，tag为latest的镜像
-  17.docker build -t test/testimage:2019 . 创建一个名字为test/testimage，tag为2019的镜像
+  13.docker network create --subnet=172.22.0.0/16 my_net 创建名为my_net的固定ip
+  14.docker network create -d bridge my_net 创建名为my_net的内网ip
+  15.docker inspect $containerId |grep IPA 查看指定容器的ip
+  16.docker rmi $imageId 删除镜像
+  17.docker build -t test/testimage . 创建一个名字为test/testimage，tag为latest的镜像
+  18.docker build -t test/testimage:2019 . 创建一个名字为test/testimage，tag为2019的镜像
+  
   
 二、docker 创建 zookeeper
   1.docker search zookeeper
