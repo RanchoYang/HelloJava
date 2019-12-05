@@ -122,12 +122,12 @@
 
 4. 将原来的联合索引里面列的顺序调整为code->phone->name
 
-   | sql语句                                                      |       key        |             | 时间（单位：ms） |
-   | ------------------------------------------------------------ | :--------------: | ----------- | :--------------: |
-   | select * from people where  code='2027189214'                |     联合索引     | const       |        0         |
+   | sql语句                                                      |       key        |     ref     | 时间（单位：ms） |
+   | ------------------------------------------------------------ | :--------------: | :---------: | :--------------: |
+   | select * from people where  code='2027189214'                |     联合索引     |    const    |        0         |
    | select * from people where  code='2027189214' and phone ='13177778888' |     联合索引     | const,const |        0         |
    | select * from people where   phone ='13177778888' and  code='2027189214' |     联合索引     | const,const |        0         |
-   | select * from people where  code='2027189214' and name ='People_299999' | name列的普通索引 | const       |        0         |
+   | select * from people where  code='2027189214' and name ='People_299999' | name列的普通索引 |    const    |        0         |
    | select * from people where phone ='13177778888'              |     联合索引     |             |       197        |
 
 5. 
