@@ -19,9 +19,14 @@
    )
    ```
 
-2. 插入50万条数据，插入的规则：id从1开始递增，name列为People_id的格式，code列在id小于300000时为随机数字，从300000开始值固定为test
+2. 插入50万条数据，插入的规则：id从1开始递增，name列为People_id的格式，code列在id小于300000时为随机数字，从300000开始值固定为test，如下：
 
-3. 如果查询条件为`name ='People_499999'`，则表示查询最后一条数据；如果查询条件为`name ='People_1'`，则表示查询第一条数据
+   |   id   |     name      |    code    |
+   | :----: | :-----------: | :--------: |
+   | 299999 | People_299999 | 2027189214 |
+   | 495545 | People_495545 |    test    |
+
+3. 如果查询条件为`name ='People_499999'`，则表示查询最后一条数据；如果查询条件为`name ='People_1'`，则表示查询第一条数据，下面为没有索引时候的查询
 
    | sql语句                                                  | 时间（单位：ms） |
    | :------------------------------------------------------- | :--------------: |
@@ -29,7 +34,7 @@
    | select * from people where name ='People_499999' limit 1 |      196.8       |
    | select * from people where name ='People_1'              |      203.2       |
    | select * from people where name ='People_1' limit 1      |        0         |
-   
+
 4. name列加上普通索引
 
    | sql语句                                                      | 时间（单位：ms） |
@@ -72,7 +77,11 @@
    )
    ```
 
-2. 插入50万条数据，插入的规则：id从1开始递增，p_id也是从1开始递增，region列为Region_id的格式，address列为Addr_id的格式
+2. 插入50万条数据，插入的规则：id从1开始递增，p_id也是从1开始递增，region列为Region_id的格式，address列为Addr_id的格式，如下：
+
+   |  id  | p_id |  region  | address |
+   | :--: | :--: | :------: | :-----: |
+   |  5   |  5   | Region_5 | Addr_5  |
 
 3. 以下查询都建立在people表name列加了索引的基础上
 
@@ -87,14 +96,19 @@
 
 ##### 四、单表联合索引
 
-1. people表再增多一列默认为null
+1. people表再增多一列phone，默认值为null
 
    ```java
    ALTER TABLE `people` 
    ADD COLUMN `phone` VARCHAR(20) NULL AFTER `code` 
    ```
 
-2. 给其中code为2027189214的数据插入**`phone=13177778888`**用来测试
+2. 给其中`code=2027189214`的数据更新`phone=13177778888`用来测试，如下：
+
+   |   id   |     name      |    code    |    phone    |
+   | :----: | :-----------: | :--------: | :---------: |
+   | 299999 | People_299999 | 2027189214 | 13177778888 |
+   | 495545 | People_495545 |    test    |    null     |
 
 3. 给name和code和phone列增加一个联合索引，顺序为name->code->phone
 
