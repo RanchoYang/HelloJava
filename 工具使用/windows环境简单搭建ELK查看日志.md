@@ -1,8 +1,12 @@
 ## windows环境简单搭建ELK查看日志
 
 1. 下载安装es
-   1. 下载地址：https://www.elastic.co/cn/downloads/elasticsearch。注意，es各个版本对java的依赖版本不一样，es 5需要java 8，es 6.5需要java 11
+   1. 下载地址：https://www.elastic.co/cn/downloads/elasticsearch
+   
+      **注意：**es各个版本对java的依赖版本不一样，es 5需要java 8，es 6.5需要java 11
+   
    2. 打开`bin\elasticsearch.bat`启动es
+   
    3. http://localhost:9200，查看es状态
    
 2. 简单的es操作命令
@@ -20,7 +24,7 @@
 
    3. `server.conf`内容如下
 
-      ```json
+      ```
       input {
           file {
               path => ["E:/logs/server.log"]	
