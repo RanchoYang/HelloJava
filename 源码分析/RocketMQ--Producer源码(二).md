@@ -1,6 +1,6 @@
 ## RocketMQ--Producer源码(二)
 
-##### 一、send(Message msg)
+#### 一、send(Message msg)
 
 1. 默认同步发送消息，3秒超时
 
@@ -11,7 +11,7 @@
        }
    ```
 
-##### 二、sendDefaultImpl()
+#### 二、sendDefaultImpl()
 
 1. 首先校验topic等是否符合
 
@@ -104,7 +104,7 @@
 
 8. 重复步骤4-7，如果重试次数等于已经重试次数或者超时，抛出异常
 
-##### 三、sendKernelImpl()
+#### 三、sendKernelImpl()
 
 1. 从broker地址列表获取broker地址
 
@@ -143,7 +143,7 @@
 
 11. 执行发送消息后的钩子方法
 
-##### 四、MQClientAPIImpl.sendMessage()
+#### 四、MQClientAPIImpl.sendMessage()
 
 1. 判断是否发送smart消息或者该消息是批量消息，分别创建远程请求request，注意创建request时候传入的RequestCode，namesrv接收到消息后会通过code做不同的处理
 
@@ -161,7 +161,7 @@
    1. remotingClient.invokeSync()
    2. 调用processSendResponse()处理发送结果
 
-##### 五、invokeSync(String addr, final RemotingCommand request, long timeoutMillis)
+#### 五、invokeSync(String addr, final RemotingCommand request, long timeoutMillis)
 
 1. 获取channel，实际上和namesrv通信
 
@@ -181,7 +181,7 @@
 
 5. 处理请求后的钩子方法
 
-##### 六、processSendResponse()
+#### 六、processSendResponse()
 
 1. 设置response的状态码
 

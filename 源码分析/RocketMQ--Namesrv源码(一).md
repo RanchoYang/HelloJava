@@ -1,6 +1,6 @@
 ## RocketMQ--Namesrv源码(一)
 
-##### 一、namesrv的启动，调用NamesrvStartup的main()方法
+#### 一、namesrv的启动，调用NamesrvStartup的main()方法
 
 ```java
  public static void main(String[] args) {
@@ -8,7 +8,7 @@
     }
 ```
 
-##### 二、创建NamesrvController
+#### 二、创建NamesrvController
 
 1. 设置系统属性--mq版本
 
@@ -38,7 +38,7 @@
    controller.getConfiguration().registerConfig(properties);
    ```
 
-##### 三、启动controller
+#### 三、启动controller
 
 1. 调用initialize()
 
@@ -101,7 +101,7 @@
    1. 启动netty server
    2. 启动证书的监听线程开始监听
 
-##### 四、打印serializeType
+#### 四、打印serializeType
 
 ```java
 String tip = "The Name Server boot success. serializeType=" + RemotingCommand.getSerializeTypeConfigInThisServer();
