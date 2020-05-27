@@ -31,10 +31,15 @@ public class InterceptorDemon {
     class InterceptorConfig implements WebMvcConfigurer {
 
         @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            System.out.println("注册拦截器");
-            registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**");
-        }
+		public void addInterceptors(InterceptorRegistry registry) {
+			System.out.println("注册拦截器");
+			registry.addInterceptor(getInterceptor()).addPathPatterns("/**");
+		}
+		
+		@Bean
+		public MyInterceptor getInterceptor() {
+			return new MyInterceptor();
+		}
     }
 }
 ```
