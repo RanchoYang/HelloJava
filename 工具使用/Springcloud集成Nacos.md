@@ -58,7 +58,7 @@
        name: demon
    ```
 
-   **注意：**
+   注意：
 
    - 这里使用bootstrap文件是因为比application文件更早的被加载
    - spring.profiles.active，file-extension以及application.name三个属性将会组成nacos的data id，规则为${prefix}-${spring.profile.active}.${file-extension}
@@ -104,19 +104,52 @@
 
 4. 此时服务提供者已经配置好了,启动服务即可在nacos后台`服务管理-服务列表`查看，以下步骤是消费者需要额外做的
 
-5. 在启动类注入restTemplate
+5. 使用RestTemplate调用
 
-   ```java
-   @LoadBalanced
-   @Bean
-   public RestTemplate restTemplate() {
-       return new RestTemplate();
-   }
-   ```
+   1. 在启动类注入restTemplate
 
-6. 调用提供者代码
+      ```java
+      @LoadBalanced
+      @Bean
+      public RestTemplate restTemplate() {
+          return new RestTemplate();
+      }
+      ```
 
-   ```java
-   restTemplate.getForEntity("http://demon/login", String.class).getBody();
-   ```
+   2. 调用提供者
+
+      ```java
+      restTemplate.getForEntity("http://demon/login", String.class).getBody();
+      ```
+
+6. 使用Feign调用
+
+   1. 增加Feign依赖
+
+      ```java
+      <dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-starter-openfeign</artifactId>
+          <version>2.2.1.RELEASE</version>
+      </dependency>
+      ```
+
+   2. 启动类增加`@EnableFeignClients`注解
+
+   3. 调用提供者，需要注意name属性为服务提供者的名字
+
+      ```java
+      @FeignClient(name = "demon")
+      public interface FeignProxy {
+      
+          @RequestMapping(value = "/login", method = RequestMethod.GET)
+          String invoke();
+      }
+      ```
+
+   4. 在其他类通过`@Autowired`注解注入`FeignProxy`即可
+
+   
+
+   
 
