@@ -1,5 +1,0 @@
-强制路由读取主库数据时候，在查询完需要关闭。
-HintManager hintManager = HintManager.getInstance();
-		hintManager.setMasterRouteOnly();
-    //查询。。。。
-    hintManager.close();
